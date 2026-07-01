@@ -7,3 +7,7 @@ each of which can be viewed in a carousel.
 ## Features
 
 ## Technology used
+
+## Deployed Website
+
+Check out [this site](https://wflourno.github.io/ai-se_project_flashcards) on GitHub Pages
