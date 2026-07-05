@@ -1,4 +1,4 @@
-.deck {
+.card {
   position: relative;
   display: flex;
   justify-content: space-between;
@@ -12,13 +12,13 @@
   list-style-type: none;
 }
 
-.deck__link {
+.card__link {
   position: absolute;
   inset: 0;
   z-index: 2;
 }
 
-.deck__title {
+.card__title {
   margin-bottom: 32px;
   font-size: 24px;
   font-weight: 700;
@@ -27,7 +27,7 @@
   margin-bottom: 32px;
 }
 
-.deck__row {
+.card__row {
   border-radius: 20px;
   display: flex;
   align-items: flex-end;
@@ -38,13 +38,13 @@
   color: #1a1a1a80;
 }
 
-.deck__count {
+.card__count {
   font-weight: 400;
   font-size: 16px;
   line-height: 1.2;
 }
 
-.deck__delete-btn {
+.card__delete-btn {
   z-index: 2;
   width: 24px;
   height: 24px;
@@ -54,26 +54,26 @@
   cursor: pointer;
 }
 
-.deck__delete-btn:hover {
+.card__delete-btn:hover {
   opacity: 100%;
 }
 
-.deck_color_blue {
+.card_color_blue {
   background-color: #91a8f9;
 }
 
-.deck_color_pink {
+.card_color_pink {
   background-color: #ee92d7;
 }
 
-.deck_color_purple {
+.card_color_purple {
   background-color: #aa8ef0;
 }
 
-.deck_color_orange {
+.card_color_orange {
   background-color: #ee955e;
 }
 
-.deck_color_yellow {
+.card_color_yellow {
   background-color: #f5d770;
 }
