@@ -7,8 +7,8 @@
     <meta name="keywords" content="Flashcards" />
     <meta name="description" content="flashcard web app" />
     <title>Flash Cards</title>
-    <link rel="stylesheet" href="./assets/css/style.css" />
-    <link rel="stylesheet" href="./assets/vendor/normalize.css" />
+    <link rel="stylesheet" href="./assets/css/index.css" />
+    <!-- <link rel="stylesheet" href="./assets/vendor/normalize.css" /> -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -32,28 +32,61 @@
         </nav>
       </header>
       <main class="page__main-content">
-        <section id="home" class="decks">
-          <h2 class="decks__title">My Decks</h2>
+        <section id="home" class="gallery">
+          <h2 class="gallery__title">My Decks</h2>
           <div class="wrapping-row">
-            <ul class="decks__list wrapping-row__display-contents">
+            <ul class="gallery__list wrapping-row__display-contents">
             <template id="deck-template">
-              <li class="deck deck_color_green">
-                <a href="#" class="deck__link"></a>
-                <h2 class="deck__title"></h2>
-                <div class="deck__row deck_color_green">
-                  <p class="deck__count"></p>
+              <li class="card card_color_green">
+                <a href="#" class="card__link"></a>
+                <h3 class="card__title"></h3>
+                <div class="card__row card_color_green">
+                  <p class="card__count"></p>
                   <button
                     type="button"
                     aria-label="Delete this deck."
-                    class="deck__delete-btn"
+                    class="card__delete-btn"
                   ></button>
                 </div>
               </li>
             </template>
             </ul>
-            <button type="button" class="decks__new-deck-btn">
+            <button type="button" class="gallery__new-card-btn">
               + New Deck
             </button>
+          </div>
+        </section>
+
+
+        <section id="deck-view" class="gallery">
+          <h2 class="gallery__title"></h2>
+          <div class="wrapping-row">
+            <ul class="gallery__list wrapping-row__display-contents">
+              <template id="flashcard-template">
+                <li class="card card_color_green">
+                  <h3 class="card__title"></h3>
+                  <div class="card__row card_color_green">
+                    <button 
+                      type="button"
+                      aria-label="Flip this flashcard please. And thank you!"
+                      class="card__flip-btn"
+                    ></button>
+                    <button
+                      type="button"
+                      aria-label="Delete this deck."
+                      class="card__delete-btn"
+                    ></button>
+                  </div>
+                </li>
+              </template>
+            </ul>
+            <button type="button" class="gallery__new-flashcard-btn">
+              + New Flashcard
+            </button>
+            <div class="gallery__practice-btn-row">
+              <h2 class="gallery__title"></h2>
+              <button type="button" class="gallery__practice-btn">Practice</button>
+            </div>
           </div>
         </section>
 
