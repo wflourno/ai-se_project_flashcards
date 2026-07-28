@@ -44,18 +44,32 @@
   line-height: 1.2;
 }
 
-.card__delete-btn {
+.card__btn {
   z-index: 2;
-  width: 24px;
-  height: 24px;
   background-color: transparent;
-  background-image: url("../images/delete.svg");
-  opacity: 50%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  opacity: 100%;
   cursor: pointer;
+  border: none;
+  transition: opacity 0.2s ease;
 }
 
-.card__delete-btn:hover {
-  opacity: 100%;
+.card__btn:hover {
+  opacity: 75%;
+}
+
+.card__btn_type_delete {
+  width: 24px;
+  height: 24px;
+  background-image: url("../images/delete.svg");
+}
+
+.card__btn_type_flip {
+  width: 32px;
+  height: 32px;
+  background-image: url("../images/flip.svg");
 }
 
 .card_color_blue {

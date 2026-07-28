@@ -7,3 +7,9 @@
 .wrapping-row__display-contents {
   display: contents;
 }
+
+/* @media screen and (min-width: 750px) {
+  .wrapping-row {
+    grid-template-columns: repeat(auto-fill, 325px);
+  }
+} */

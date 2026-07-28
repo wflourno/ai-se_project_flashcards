@@ -30,6 +30,7 @@
   margin-top: 32px;
   margin-bottom: 24px;
   border-radius: 20px;
+  box-sizing: border-box;
 }
 
 .carousel__card_color_blue {
@@ -116,3 +117,4 @@
 .carousel__btn_disabled:hover::before {
   cursor: default;
 }
+

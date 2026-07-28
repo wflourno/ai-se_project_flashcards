@@ -16,7 +16,8 @@
   padding: 0;
 }
 
-.gallery__new-card-btn {
+.gallery__new-card-btn,
+.gallery__new-flashcard-btn {
   width: 325px;
   height: 205px;
   padding: 20px;
@@ -28,9 +29,39 @@
   background-color: #c5c5c5;
   color: #1a1a1a80;
   cursor: pointer;
+  border: none;
 }
 
-.gallery__new-card-btn:hover {
+.gallery__new-card-btn:hover,
+.gallery__new-flashcard-btn:hover {
   background-color: #c5c5c5;
   color: #1a1a1a;
 }
+
+.gallery__practice-btn-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-top: 24px;
+}
+
+.gallery__practice-btn {
+  padding: 12px 24px;
+  border-radius: 12px;
+  border: none;
+  background-color: #1a1a1a;
+  color: #fff;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.2;
+  cursor: pointer;
+  margin-bottom: 40px;
+}
+
+/* @media screen and (max-width: 600px) {
+  .gallery__title {
+    font-size: 32px;
+    margin-bottom: 20px;
+  }
+} */

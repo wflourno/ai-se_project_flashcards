@@ -13,7 +13,8 @@ function renderCarouselView(deck) {
   const leftBtn = carouselEl.querySelector(".carousel__btn_type_left");
   const rightBtn = carouselEl.querySelector(".carousel__btn_type_right");
   const flipBtn = carouselEl.querySelector(".carousel__btn_type_flip");
-
+  const page = document.querySelector(".page");
+  page.classList.remove('page_no-mobile-bar');
   
   
 
