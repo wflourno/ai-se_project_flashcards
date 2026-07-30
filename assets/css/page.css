@@ -16,15 +16,3 @@
   flex-grow: 1;
   margin-bottom: 138px;
 }
-
-/* @media screen and (max-width: 600px) {
-  .page {
-    padding: 20px 20px 32px;
-  }
-
-  .page__main-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-} */
