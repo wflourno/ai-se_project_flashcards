@@ -22,7 +22,7 @@ Highly interactive buttons for flipping flashcards for studying and reviewing co
 ## Changes Made to the Project
 
 - Made the content more responsive at less than 400 px wide.
-- Used display grid to properly setup the layout of the content.
+- Used display grid to properly setup the responsive layout of the content.
 - Added a confirmation modal using JavaScript to eliminate accidental issues of deleting content without warning the users of doing so.
 
 ## Deployed Website
