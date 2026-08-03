@@ -12,12 +12,12 @@ Highly interactive buttons for flipping flashcards for studying and reviewing co
 
 ## Technology used
 
-HTML5 
-CSS3
-JavaScript
-Git & GitHub Version Control 
-Command Line Interface: Windows only
-VS Code IDE
+- HTML5 
+- CSS3
+- JavaScript
+- Git & GitHub Version Control 
+- Command Line Interface: Windows only
+- VS Code IDE
 
 ## Changes Made to the Project
 
