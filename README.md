@@ -28,3 +28,8 @@ Highly interactive buttons for flipping flashcards for studying and reviewing co
 ## Deployed Website
 
 Check out [this site](https://wflourno.github.io/ai-se_project_flashcards) on GitHub Pages
+
+## Project Pitch Video
+ 
+ Check out [this video](ADD_LINK_HERE), where I describe my 
+ project and some challenges I faced while building it.
