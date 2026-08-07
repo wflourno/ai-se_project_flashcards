@@ -31,5 +31,5 @@ Check out [this site](https://wflourno.github.io/ai-se_project_flashcards) on Gi
 
 ## Project Pitch Video
  
- Check out [this video]([ADD_LINK_HERE](https://www.loom.com/share/f72491d4d5e54a1bb72b5ce99c473a69)), where I describe my 
+ Check out [this video](https://www.loom.com/share/f72491d4d5e54a1bb72b5ce99c473a69), where I describe my 
  project and some challenges I faced while building it.
