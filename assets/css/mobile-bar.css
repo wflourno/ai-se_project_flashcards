@@ -1,6 +1,7 @@
 @media screen and (max-width: 805px) {
   .page {
     padding: 0;
+    margin: 0;
   }
 
   .page::after {
@@ -22,18 +23,24 @@
   .header__title {
     font-weight: 900;
     font-size: 20px;
-    margin: 0 0 40px;
+    padding: 16px 20px;
+  }
+
+  .nav {
+    padding: 22px 20px 0;
   }
 
   .gallery__title {
     font-size: 32px;
     margin: 0 0 20px;
+    padding: 0 20px;
   }
 
   .gallery__list {
     display: grid;
     grid-template-columns: 1fr;
     gap: 20px;
+    padding: 0 20px;
   }
 
   .card {
@@ -49,6 +56,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 12px;
   }
 
   .gallery__new-card-btn {
@@ -71,6 +79,7 @@
     border-radius: 8px;
     align-items: center;
     justify-content: center;
+    margin: 0 auto;
   }
 
   .gallery__new-flashcard-btn,
@@ -166,6 +175,8 @@
     position: fixed;
     bottom: 14px;
     z-index: 2;
+    margin: 0 auto;
+    padding: 0 20px;
   }
 
   .modal {
