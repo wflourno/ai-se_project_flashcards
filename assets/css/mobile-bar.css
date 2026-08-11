@@ -16,7 +16,7 @@
     z-index: 1;
   }
 
-  .page_no_mobile-bar {
+  .page_no-mobile-bar::after {
     display: none;
   }
 

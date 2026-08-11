@@ -30,7 +30,7 @@
           </ul>
         </nav>
       </header>
-      
+
       <main class="page__main-content">
         <section id="home" class="gallery">
           <h2 class="gallery__title">My Decks</h2>
@@ -56,7 +56,12 @@
         </section>
 
         <section id="deck-view" class="gallery">
-          <h2 class="gallery__title"></h2>
+          <div class="gallery__practice-btn-row">
+            <h2 class="gallery__title"></h2>
+            <button type="button" class="gallery__practice-btn">
+              Practice
+            </button>
+          </div>
           <div class="wrapping-row">
             <ul class="gallery__list wrapping-row__display-contents">
               <template id="flashcard-template">
@@ -77,18 +82,12 @@
                 </li>
               </template>
             </ul>
-            <div class="gallery__practice-btn-row">
-              <h2 class="gallery__title"></h2>
-              <button type="button" class="gallery__practice-btn">
-                Practice
-              </button>
-              <button
-                type="button"
-                class="gallery__new-flashcard-btn gallery__new-flashcard-btn_location_deck-view"
-              >
-                + New Flashcard
-              </button>
-            </div>
+            <button
+              type="button"
+              class="gallery__new-flashcard-btn gallery__new-flashcard-btn_location_deck-view"
+            >
+              + New Flashcard
+            </button>
           </div>
         </section>
 

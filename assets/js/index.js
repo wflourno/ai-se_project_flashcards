@@ -2,6 +2,9 @@ import { decks, getDeckByID } from "./decks.js";
 import { hexToString } from "./colors.js";
 import { renderCarouselView } from "./carousel.js";
 import { openModal } from "./modal.js";
+// cannot import renderDeckView from deck-view.js
+// or it will get rid of the cards from the home view
+// and deck view
 
 
 const homeSection = document.querySelector("#home");
@@ -33,7 +36,7 @@ function showView(currentSection, display) {
 
 function renderHomeView() {
   deckViewList.innerHTML = "";
-  showView(homeSection, "block"); 
+  showView(homeSection, "block");
   page.classList.remove('page_no-mobile-bar');
 }
 
@@ -58,8 +61,7 @@ function createDeckEl(item) {
   deckCount.textContent = `${item.cards.length} cards`;
   deckLink.href = `#deck/${item.id}`;
 
-  deleteBtn.addEventListener("click", (event) => {
-    event.stopPropagation();
+  deleteBtn.addEventListener("click", () => {
     openModal(() => cloneEl.remove());
   });
 
@@ -82,8 +84,7 @@ function createFlashcardEl(item, deckColor) {
   let showingQuestion = true;
   cardTitleEl.textContent = item.question;
 
-  deleteBtn.addEventListener("click", (event) => {
-    event.stopPropagation();
+  deleteBtn.addEventListener("click", () => {
     openModal(() => cloneEl.remove());
   });
 
@@ -101,7 +102,7 @@ function createFlashcardEl(item, deckColor) {
   return cloneEl;
 }
 
-function renderDeckView(deck) {
+function renderDeckViewAgain(deck) {
   currentDeck = deck;
   showView(deckViewSection, "block");
 
@@ -123,7 +124,7 @@ function router() {
     const deck = getDeckByID(hash.split("/")[1]);
 
     if (deck) {
-      renderDeckView(deck);
+      renderDeckViewAgain(deck);
     } else {
       renderNotFoundView();
     }

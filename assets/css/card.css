@@ -45,7 +45,6 @@
 }
 
 .card__btn {
-  z-index: 2;
   background-color: transparent;
   background-repeat: no-repeat;
   background-position: center;
@@ -90,4 +89,8 @@
 
 .card_color_yellow {
   background-color: #f5d770;
+}
+
+.card_color_white {
+  background-color: #fff;
 }
