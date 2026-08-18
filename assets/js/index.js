@@ -11,23 +11,29 @@ const homeSection = document.querySelector("#home");
 const deckViewSection = document.querySelector("#deck-view");
 const carouselSection = document.querySelector("#carousel");
 const notFoundSection = document.querySelector("#not-found");
+const newDeckViewSection = document.querySelector("#new-deck-view");
 
 let currentDeck = null;
 
 const page = document.querySelector(".page");
-const practiceBtn = document.querySelector(".gallery__practice-btn");
 const mainEl = document.querySelector(".page__main-content")
 const deckTemplateEL = document.querySelector("#deck-template");
 const flashcardTemplateEL = document.querySelector("#flashcard-template");
 const deckList = document.querySelector("#home .gallery__list");
 const deckViewList = document.querySelector("#deck-view .gallery__list");
 
+const practiceBtn = document.querySelector(".gallery__practice-btn");
 practiceBtn.addEventListener("click", () => {
   window.location.hash = `carousel/${currentDeck.id}`;
 });
 
+const newCardBtn = document.querySelector("#home .gallery__new-card-btn");
+newCardBtn.addEventListener("click", () => {
+  window.location.hash = `new-deck/`;
+});
+
 function showView(currentSection, display) {
-  const allSections = [homeSection, carouselSection, notFoundSection, deckViewSection];
+  const allSections = [homeSection, carouselSection, notFoundSection, deckViewSection, newDeckViewSection];
   allSections.forEach((view) => {
     view.style.display = "none";
   });
@@ -42,6 +48,11 @@ function renderHomeView() {
 
 function renderNotFoundView() {
   showView(notFoundSection, "flex");
+  page.classList.remove('page_no-mobile-bar');
+}
+
+function renderNewDeckView() {
+  showView(newDeckViewSection, "flex");
   page.classList.remove('page_no-mobile-bar');
 }
 
@@ -134,11 +145,11 @@ function router() {
     mainEl.classList.add("page__main-content_location_carousel");
 
     const deckID = hash.split("/")[1];
-    // const currentDeck = getDeckByID(decks, deckID);
-    renderCarouselView(currentDeck);
-    renderCarouselView(getDeckByID(hash.split("/")[1]));
-  } else if (hash.startsWith("carousel/")) {
-    showView(deckViewSection, "block");
+    renderCarouselView(getDeckByID(deckID));
+  } else if (hash.startsWith("new-deck/")) {
+    showView(newDeckViewSection, "flex");
+    const deckID = hash.split("/")[1];
+    renderNewDeckView(getDeckByID(deckID));
   } else {
     renderNotFoundView();
   }

@@ -191,4 +191,23 @@
   .modal_visible {
     visibility: visible;
   }
+
+  .new-deck-view {
+    margin: 0 auto;
+  }
+
+  .new-deck-view__title {
+    padding: 0 20px;
+  }
+
+  .new-deck-view__form {
+    padding: 0 20px;
+  }
+
+  .new-deck-view__textarea-input {
+    max-width: 353px;
+    width: 100%;
+    min-height: 432px;
+    border-radius: 8px;
+  }
 }
