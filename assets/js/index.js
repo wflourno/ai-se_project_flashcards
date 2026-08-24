@@ -1,7 +1,10 @@
 import { decks, getDeckByID } from "./decks.js";
 import { hexToString } from "./colors.js";
+import { disableSubmitBtn } from "./new-deck-view.js";
 import { renderCarouselView } from "./carousel.js";
 import { openModal } from "./modal.js";
+
+
 // cannot import renderDeckView from deck-view.js
 // or it will get rid of the cards from the home view
 // and deck view
@@ -147,9 +150,9 @@ function router() {
     const deckID = hash.split("/")[1];
     renderCarouselView(getDeckByID(deckID));
   } else if (hash.startsWith("new-deck/")) {
+    disableSubmitBtn();
     showView(newDeckViewSection, "flex");
-    const deckID = hash.split("/")[1];
-    renderNewDeckView(getDeckByID(deckID));
+    renderNewDeckView();
   } else {
     renderNotFoundView();
   }
