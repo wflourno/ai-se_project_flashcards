@@ -183,13 +183,18 @@
               </label>
             </fieldset>
 
-            <label class="new-deck-view__json-container">
+            <label for="json" class="new-deck-view__json-container">
               Write the JSON array of cards so that it matches this schema
-              <textarea name="json" id="json" class="new-deck-view__textarea-input"></textarea>
+              <textarea
+                name="json"
+                id="json"
+                class="new-deck-view__textarea-input"
+              ></textarea>
             </label>
-            <button type="submit" class="new-deck-view__submit-btn" disabled>Create the Deck</button>
+            <button type="submit" class="new-deck-view__submit-btn" disabled>
+              Create the Deck
+            </button>
           </form>
-
         </section>
 
         <section id="not-found" class="not-found">
@@ -209,6 +214,14 @@
               Delete
             </button>
           </div>
+        </div>
+      </div>
+
+      <div class="modal" id="error-modal">
+        <div class="modal__content">
+          <h2 class="modal__title">Error</h2>
+          <p class="modal__error"></p>
+          <button class="modal__close" type="button"></button>
         </div>
       </div>
 

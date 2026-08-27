@@ -3,16 +3,62 @@ import { decks } from "./decks.js";
 const HEX_DIGITS = /^[0-9a-fA-F]{6}$/;
 
 const newDeckForm = document.querySelector(".new-deck-view__form");
-const newDeckTextArea = newDeckForm.querySelector(
+const submitBtn = newDeckForm.querySelector(".new-deck-view__submit-btn");
+const errorModal = document.querySelector("#error-modal");
+const modalCloseBtn = errorModal.querySelector(".modal__close");
+const errorModalMessage = errorModal.querySelector(".modal__error");
+const newDeckTextArea = document.querySelector(
   ".new-deck-view__textarea-input",
 );
-const submitBtn = newDeckForm.querySelector(".new-deck-view__submit-btn");
 
+function openModal(modal) {
+  modal.classList.add("modal_visible");
+}
+
+modalCloseBtn.addEventListener("click", () => {
+  errorModal.classList.remove("modal_visible");
+  errorModalMessage.classList.remove("modal__error");
+});
+
+//submit handler
+// -------------------------------------------
 newDeckForm.addEventListener("submit", function (e) {
   e.preventDefault(); // stops the page from reloading
+
   const formData = new FormData(e.target);
   const values = Object.fromEntries(formData);
-  const jsonData = JSON.parse(values.json);
+
+  const jsonData = parseJSON(values.json);
+  if (jsonData === null) {
+    showError("JSON parsing failed");
+    return;
+  }
+
+  const name = validateName(jsonData.name);
+  if (name === null) {
+    showError("name must be a string between 2 and 80 characters");
+    return;
+  }
+
+  if (!Array.isArray(jsonData.cards)) {
+    showError("cards must be an array");
+    return;
+  }
+
+  if (jsonData.color === undefined) {
+    return true;
+  } else if (typeof jsonData.color === "string") {
+    if (jsonData.color.toLowerCase() === colorValue.toLowerCase()) {
+      return true;
+    } else {
+      showError("Invalid card color use one of: #64D583, #91A8F9, #EE92D7, #AA8EF0, #EE955E, #F5D770")
+      return false;
+    }
+  } else {
+    showError("Invalid card color use one of: #64D583, #91A8F9, #EE92D7, #AA8EF0, #EE955E, #F5D770");
+    return false;
+  }
+
   const color = normalizeColor(values.color);
   const jsonDeckID = `${slugify(jsonData.name)}-${Date.now()}`;
   const deck = {
@@ -27,6 +73,29 @@ newDeckForm.addEventListener("submit", function (e) {
 
 export function disableSubmitBtn() {
   submitBtn.disabled = false;
+}
+
+function showError(message) {
+  openModal(errorModal);
+  errorModalMessage.textContent = message;
+  errorModalMessage.classList.add("modal__error");
+}
+
+// Helper functions
+// -------------------------------------------
+function validateName(name) {
+  if (typeof name != "string" || name.length < 2 || name.length > 80) {
+    return null;
+  }
+  return name;
+}
+
+function parseJSON(jsonString) {
+  try {
+    return JSON.parse(jsonString);
+  } catch (error) {
+    return null;
+  }
 }
 
 /**

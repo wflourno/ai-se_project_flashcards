@@ -21,4 +21,8 @@ function openModal(onConfirm) {
   cancelBtn.addEventListener("click", close);
 }
 
+
+
+
+
 export { openModal };
