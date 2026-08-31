@@ -1,8 +1,9 @@
-import { decks, getDeckByID } from "./decks.js";
+import { decks, getDeckByID, fetchedDecks, removeDeckByID } from "./decks.js";
 import { hexToString } from "./colors.js";
-import { disableSubmitBtn } from "./new-deck-view.js";
+import { disableSubmitBtn, showError } from "./new-deck-view.js";
 import { renderCarouselView } from "./carousel.js";
 import { openModal } from "./modal.js";
+import { getDecks, deleteDeck, headers, baseUrl } from "./api.js";
 
 
 // cannot import renderDeckView from deck-view.js
@@ -27,7 +28,7 @@ const deckViewList = document.querySelector("#deck-view .gallery__list");
 
 const practiceBtn = document.querySelector(".gallery__practice-btn");
 practiceBtn.addEventListener("click", () => {
-  window.location.hash = `carousel/${currentDeck.id}`;
+  window.location.hash = `carousel/${currentDeck._id}`;
 });
 
 const newCardBtn = document.querySelector("#home .gallery__new-card-btn");
@@ -47,6 +48,16 @@ function renderHomeView() {
   deckViewList.innerHTML = "";
   showView(homeSection, "block");
   page.classList.remove('page_no-mobile-bar');
+
+  getDecks()
+    .then((decks) => {
+      // Push the fetched decks onto the array
+      fetchedDecks.push(...decks);
+      decks.forEach(renderDeckEl);
+    })
+    .catch(() => {
+      showError("Error fetching decks");
+    });
 }
 
 function renderNotFoundView() {
@@ -71,13 +82,24 @@ function createDeckEl(item) {
   const deckLink = cloneEl.querySelector(".card__link");
   const cardRowEl = cloneEl.querySelector(".card__row");
 
-  deckTitleEl.textContent = item.name;
-  deckCount.textContent = `${item.cards.length} cards`;
-  deckLink.href = `#deck/${item.id}`;
 
   deleteBtn.addEventListener("click", () => {
-    openModal(() => cloneEl.remove());
+    deleteDeck(item._id)
+      .then(() => {
+        removeDeckByID(item._id);
+        cloneEl.remove();
+
+      })
+      .catch(() => {
+        showError("Error deleting deck(s)");
+      })
   });
+
+  deckTitleEl.textContent = item.name;
+  deckCount.textContent = `${item.cards.length} cards`;
+  deckLink.href = `#deck/${item._id}`;
+
+
 
   const colorClass = `card_color_${hexToString(item.color)}`;
   cloneEl.classList.remove("card_color_green");
@@ -158,7 +180,20 @@ function router() {
   }
 }
 
-window.addEventListener("DOMContentLoaded", router);
+// window.addEventListener("DOMContentLoaded", router);
+document.addEventListener("DOMContentLoaded", () => {
+  getDecks()
+    .then((decks) => {
+      fetchedDecks.push(...decks);
+      decks.forEach(renderDeckEl);
+    })
+    .catch(() => {
+      showError("Can't fetch decks");
+    })
+    .finally(() => {
+      router();
+    })
+});
 window.addEventListener("hashchange", router);
 
 function renderDeckEl(item) {
@@ -166,7 +201,6 @@ function renderDeckEl(item) {
   deckList.prepend(deckEl);
 }
 
-decks.forEach(renderDeckEl);
 
 
 

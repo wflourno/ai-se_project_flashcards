@@ -18,6 +18,12 @@
   z-index: 2;
 }
 
+.card__btn_type_delete {
+  position: static;
+  inset: 0;
+  z-index: 2;
+}
+
 .card__title {
   margin-bottom: 32px;
   font-size: 24px;

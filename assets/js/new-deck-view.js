@@ -48,7 +48,7 @@ newDeckForm.addEventListener("submit", function (e) {
   const color = normalizeColor(values.color);
   const jsonDeckID = `${slugify(jsonData.name)}-${Date.now()}`;
   const deck = {
-    id: jsonDeckID,
+    _id: jsonDeckID,
     color: color,
     cards: jsonData.cards,
     name: jsonData.name,
@@ -71,7 +71,7 @@ export function disableSubmitBtn() {
   submitBtn.disabled = false;
 }
 
-function showError(message) {
+export function showError(message) {
   openModal(errorModal);
   errorModalMessage.textContent = message;
   errorModalMessage.classList.add("modal__error");
