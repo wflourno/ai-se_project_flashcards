@@ -1,4 +1,4 @@
-import { decks, fetchedDecks } from "./decks.js";
+import { fetchedDecks } from "./decks.js";
 import { addDeck } from "./api.js";
 
 const HEX_DIGITS = /^[0-9a-fA-F]{6}$/;

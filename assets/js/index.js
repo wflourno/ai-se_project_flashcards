@@ -14,6 +14,7 @@ const deckViewSection = document.querySelector("#deck-view");
 const carouselSection = document.querySelector("#carousel");
 const notFoundSection = document.querySelector("#not-found");
 const newDeckViewSection = document.querySelector("#new-deck-view");
+const aboutSection = document.querySelector("#about");
 
 let currentDeck = null;
 
@@ -41,6 +42,7 @@ function showView(currentSection, display) {
     notFoundSection,
     deckViewSection,
     newDeckViewSection,
+    aboutSection,
   ];
   allSections.forEach((view) => {
     view.style.display = "none";
@@ -71,6 +73,11 @@ function renderNotFoundView() {
 
 function renderNewDeckView() {
   showView(newDeckViewSection, "flex");
+  page.classList.remove("page_no-mobile-bar");
+}
+
+function renderAboutView() {
+  showView(aboutSection, "flex");
   page.classList.remove("page_no-mobile-bar");
 }
 
@@ -177,8 +184,9 @@ function router() {
     renderCarouselView(getDeckByID(deckID));
   } else if (hash.startsWith("new-deck/")) {
     disableSubmitBtn();
-    showView(newDeckViewSection, "flex");
     renderNewDeckView();
+  } else if (hash === "about") {
+    renderAboutView();
   } else {
     renderNotFoundView();
   }
