@@ -1,4 +1,5 @@
-import { decks } from "./decks.js";
+import { decks, fetchedDecks } from "./decks.js";
+import { addDeck } from "./api.js";
 
 const HEX_DIGITS = /^[0-9a-fA-F]{6}$/;
 
@@ -53,18 +54,41 @@ newDeckForm.addEventListener("submit", function (e) {
     cards: jsonData.cards,
     name: jsonData.name,
   };
-  decks.push(deck);
-  window.location.hash = "deck/" + jsonDeckID;
+
+  addDeck({
+    name: jsonData.name,
+    cards: jsonData.cards,
+    color,
+  })
+    .then((newDeck) => {
+      // Push the new deck onto the array
+      fetchedDecks.push({
+        _id: newDeck._id,
+        color: newDeck.color,
+        name: newDeck.name,
+        cards: jsonData.cards
+      });
+      console.log(newDeck, "Response received");
+
+      // Set the hash to redirect
+      window.location.hash = "deck/" + newDeck._id;
+    })
+    .catch(showError);
+    console.log(showError);
 
   const colorValue = color;
-  if (typeof jsonData.color === "string" && jsonData.color.toLowerCase() !== colorValue.toLowerCase()) {
-    showError("Invalid card color use one of: #64D583, #91A8F9, #EE92D7, #AA8EF0, #EE955E, #F5D770");
+  if (
+    typeof jsonData.color === "string" &&
+    jsonData.color.toLowerCase() !== colorValue.toLowerCase()
+  ) {
+    showError(
+      "Invalid card color use one of: #64D583, #91A8F9, #EE92D7, #AA8EF0, #EE955E, #F5D770",
+    );
     console.log(false);
     return false;
   }
   console.log(true);
   return true;
-
 });
 
 export function disableSubmitBtn() {
@@ -124,4 +148,3 @@ function normalizeColor(color) {
   if (!HEX_DIGITS.test(hex)) return "#64d583";
   return "#" + hex.toLowerCase();
 }
-

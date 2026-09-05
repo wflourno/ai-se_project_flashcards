@@ -1,15 +1,13 @@
-import { decks, getDeckByID, fetchedDecks, removeDeckByID } from "./decks.js";
+import { getDeckByID, fetchedDecks, removeDeckByID } from "./decks.js";
 import { hexToString } from "./colors.js";
 import { disableSubmitBtn, showError } from "./new-deck-view.js";
 import { renderCarouselView } from "./carousel.js";
 import { openModal } from "./modal.js";
 import { getDecks, deleteDeck, headers, baseUrl } from "./api.js";
 
-
 // cannot import renderDeckView from deck-view.js
 // or it will get rid of the cards from the home view
 // and deck view
-
 
 const homeSection = document.querySelector("#home");
 const deckViewSection = document.querySelector("#deck-view");
@@ -20,7 +18,7 @@ const newDeckViewSection = document.querySelector("#new-deck-view");
 let currentDeck = null;
 
 const page = document.querySelector(".page");
-const mainEl = document.querySelector(".page__main-content")
+const mainEl = document.querySelector(".page__main-content");
 const deckTemplateEL = document.querySelector("#deck-template");
 const flashcardTemplateEL = document.querySelector("#flashcard-template");
 const deckList = document.querySelector("#home .gallery__list");
@@ -37,7 +35,13 @@ newCardBtn.addEventListener("click", () => {
 });
 
 function showView(currentSection, display) {
-  const allSections = [homeSection, carouselSection, notFoundSection, deckViewSection, newDeckViewSection];
+  const allSections = [
+    homeSection,
+    carouselSection,
+    notFoundSection,
+    deckViewSection,
+    newDeckViewSection,
+  ];
   allSections.forEach((view) => {
     view.style.display = "none";
   });
@@ -47,13 +51,13 @@ function showView(currentSection, display) {
 function renderHomeView() {
   deckViewList.innerHTML = "";
   showView(homeSection, "block");
-  page.classList.remove('page_no-mobile-bar');
-
+  page.classList.remove("page_no-mobile-bar");
   getDecks()
     .then((decks) => {
       // Push the fetched decks onto the array
       fetchedDecks.push(...decks);
       decks.forEach(renderDeckEl);
+      console.log(decks, "Response received");
     })
     .catch(() => {
       showError("Error fetching decks");
@@ -62,12 +66,12 @@ function renderHomeView() {
 
 function renderNotFoundView() {
   showView(notFoundSection, "flex");
-  page.classList.remove('page_no-mobile-bar');
+  page.classList.remove("page_no-mobile-bar");
 }
 
 function renderNewDeckView() {
   showView(newDeckViewSection, "flex");
-  page.classList.remove('page_no-mobile-bar');
+  page.classList.remove("page_no-mobile-bar");
 }
 
 // Create two functions: createDeckEl(item) and renderDeckEl(item).
@@ -82,24 +86,21 @@ function createDeckEl(item) {
   const deckLink = cloneEl.querySelector(".card__link");
   const cardRowEl = cloneEl.querySelector(".card__row");
 
-
   deleteBtn.addEventListener("click", () => {
     deleteDeck(item._id)
       .then(() => {
         removeDeckByID(item._id);
         cloneEl.remove();
-
+        console.log("Deck has been deleted");
       })
       .catch(() => {
         showError("Error deleting deck(s)");
-      })
+      });
   });
 
   deckTitleEl.textContent = item.name;
   deckCount.textContent = `${item.cards.length} cards`;
   deckLink.href = `#deck/${item._id}`;
-
-
 
   const colorClass = `card_color_${hexToString(item.color)}`;
   cloneEl.classList.remove("card_color_green");
@@ -111,7 +112,9 @@ function createDeckEl(item) {
 }
 
 function createFlashcardEl(item, deckColor) {
-  const cloneEl = flashcardTemplateEL.content.querySelector(".card").cloneNode(true);
+  const cloneEl = flashcardTemplateEL.content
+    .querySelector(".card")
+    .cloneNode(true);
   const cardTitleEl = cloneEl.querySelector(".card__title");
   const deleteBtn = cloneEl.querySelector(".card__btn_type_delete");
   const flipBtn = cloneEl.querySelector(".card__btn_type_flip");
@@ -139,6 +142,7 @@ function createFlashcardEl(item, deckColor) {
 }
 
 function renderDeckViewAgain(deck) {
+  console.log("it made it..", deck)
   currentDeck = deck;
   showView(deckViewSection, "block");
 
@@ -180,19 +184,19 @@ function router() {
   }
 }
 
-// window.addEventListener("DOMContentLoaded", router);
 document.addEventListener("DOMContentLoaded", () => {
   getDecks()
     .then((decks) => {
       fetchedDecks.push(...decks);
       decks.forEach(renderDeckEl);
+      console.log("Response received");
     })
     .catch(() => {
       showError("Can't fetch decks");
     })
     .finally(() => {
       router();
-    })
+    });
 });
 window.addEventListener("hashchange", router);
 
@@ -200,9 +204,3 @@ function renderDeckEl(item) {
   const deckEl = createDeckEl(item);
   deckList.prepend(deckEl);
 }
-
-
-
-
-
-

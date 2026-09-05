@@ -17,8 +17,26 @@ function getDecks() {
 }
 
 export function deleteDeck(deckId) {
-  return fetch(`${baseUrl}/decks/${deckId}`, { method: "DELETE", headers }).then(processResponse);
+  return fetch(`${baseUrl}/decks/${deckId}`, {
+    method: "DELETE", headers }).then(processResponse);
 }
 
+export function addDeck({ color, name, cards }) {
+  return fetch(`${baseUrl}/decks`, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({
+      color: color,
+      name: name,
+      cards: cards,
+    }),
+  })
+    .then((res) => {
+      if (!res.ok) {
+        return Promise.reject(`Error: ${res.status}`);
+      }
+      return res.json();
+    })
+}
 
 export { getDecks, headers, baseUrl };
