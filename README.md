@@ -21,9 +21,10 @@ Highly interactive buttons for flipping flashcards for studying and reviewing co
 
 ## Changes Made to the Project
 
-- Made the content more responsive at less than 400 px wide.
-- Used display grid to properly setup the responsive layout of the content.
-- Added a confirmation modal using JavaScript to eliminate accidental issues of deleting content without warning the users of doing so.
+- Added a ned deck feature by adding a text area input for creating a deck.
+- Implemented the error modals using JavaScript modules.
+- Fetched decks using API modules rather than using hard-coded decks from the object in Javascript.
+- Completed all documentations via JSDoc.
 
 ## Deployed Website
 

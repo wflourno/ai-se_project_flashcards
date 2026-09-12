@@ -1,0 +1,66 @@
+.new-flashcard {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  background-color: #64d583;
+  width: 325px;
+  height: 205px;
+  border-radius: 20px;
+  box-sizing: border-box;
+  padding: 20px;
+  list-style-type: none;
+}
+
+.new-flashcard__input {
+  width: 100%;
+  padding: 0;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  color: #1a1a1a;
+  font: inherit;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.new-flashcard__input::placeholder {
+  color: #1a1a1a80;
+  opacity: 1;
+}
+
+.new-flashcard__input_type_answer {
+  background-color: #fff;
+  min-height: 100%;
+}
+
+.new-flashcard__buttons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 24px;
+}
+
+.new-flashcard__flip-btn,
+.new-flashcard__submit-btn {
+  position: relative;
+  z-index: 2;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  color: #1a1a1a80;
+  font-size: 32px;
+  line-height: 1;
+}
+
+.new-flashcard__flip-btn {
+  background-image: url("../images/flip.svg");
+}
+
+.new-flashcard__submit-btn {
+  font-weight: 700;
+}

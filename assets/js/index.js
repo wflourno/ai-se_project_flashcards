@@ -1,9 +1,17 @@
 import { getDeckByID, fetchedDecks, removeDeckByID } from "./decks.js";
 import { hexToString } from "./colors.js";
-import { disableSubmitBtn, showError } from "./new-deck-view.js";
+import { disableSubmitBtn, showError, writePlaceholderJSON } from "./new-deck-view.js";
 import { renderCarouselView } from "./carousel.js";
 import { openModal } from "./modal.js";
-import { getDecks, deleteDeck, headers, baseUrl } from "./api.js";
+import {
+  addCard,
+  updateCard,
+  deleteCard,
+  getDecks,
+  deleteDeck,
+  headers,
+  baseUrl,
+} from "./api.js";
 
 // cannot import renderDeckView from deck-view.js
 // or it will get rid of the cards from the home view
@@ -24,6 +32,8 @@ const deckTemplateEL = document.querySelector("#deck-template");
 const flashcardTemplateEL = document.querySelector("#flashcard-template");
 const deckList = document.querySelector("#home .gallery__list");
 const deckViewList = document.querySelector("#deck-view .gallery__list");
+const newFlashcardTemplate = document.querySelector("#new-flashcard-template");
+const newFlashcardBtn = document.querySelector(".gallery__new-flashcard-btn");
 
 const practiceBtn = document.querySelector(".gallery__practice-btn");
 practiceBtn.addEventListener("click", () => {
@@ -35,6 +45,92 @@ newCardBtn.addEventListener("click", () => {
   window.location.hash = `new-deck/`;
 });
 
+function openFlashcardEditor(cardData = null, cardElement = null) {
+  const newFlashcardForm = newFlashcardTemplate.content
+    .querySelector(".new-flashcard")
+    .cloneNode(true);
+  const questionInput = newFlashcardForm.querySelector(
+    ".new-flashcard__input_type_question"
+  );
+  const answerInput = newFlashcardForm.querySelector(
+    ".new-flashcard__input_type_answer"
+  );
+  const flipBtn = newFlashcardForm.querySelector(".new-flashcard__flip-btn");
+  const submitBtn = newFlashcardForm.querySelector(
+    ".new-flashcard__submit-btn"
+  );
+  let showingQuestion = true;
+
+  if (cardData) {
+    questionInput.value = cardData.question;
+    answerInput.value = cardData.answer;
+  }
+
+  flipBtn.addEventListener("click", () => {
+    showingQuestion = !showingQuestion;
+    questionInput.hidden = !showingQuestion;
+    answerInput.hidden = showingQuestion;
+    (showingQuestion ? questionInput : answerInput).focus();
+  });
+
+  newFlashcardForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    submitBtn.disabled = true;
+
+    const cardValues = {
+      question: questionInput.value.trim(),
+      answer: answerInput.value.trim(),
+    };
+    if (!cardValues.question || !cardValues.answer) {
+      submitBtn.disabled = false;
+      showError("Both sides of the flashcard are required");
+      return;
+    }
+    const saveRequest = cardData
+      ? updateCard(cardData._id, cardValues)
+      : addCard(currentDeck._id, cardValues);
+
+    saveRequest
+      .then((card) => {
+        if (cardData) {
+          const cardIndex = currentDeck.cards.findIndex(
+            (currentCard) => currentCard._id === cardData._id
+          );
+          currentDeck.cards[cardIndex] = card;
+          newFlashcardForm.replaceWith(
+            createFlashcardEl(card, currentDeck.color)
+          );
+        } else {
+          currentDeck.cards.push(card);
+          deckViewList.append(createFlashcardEl(card, currentDeck.color));
+          newFlashcardForm.remove();
+        }
+      })
+      .catch(() => {
+        submitBtn.disabled = false;
+        showError(
+          cardData ? "Error updating flashcard" : "Error creating flashcard"
+        );
+      });
+  });
+
+  if (cardElement) {
+    cardElement.replaceWith(newFlashcardForm);
+  } else {
+    deckViewSection.querySelector(".wrapping-row").prepend(newFlashcardForm);
+  }
+  questionInput.focus();
+}
+
+newFlashcardBtn.addEventListener("click", () => openFlashcardEditor());
+
+/**
+ * Shows one application section and hides all other sections.
+ *
+ * @param {HTMLElement} currentSection - The section to display.
+ * @param {string} display - The CSS display value to apply.
+ * @returns {void}
+ */
 function showView(currentSection, display) {
   const allSections = [
     homeSection,
@@ -50,6 +146,11 @@ function showView(currentSection, display) {
   currentSection.style.display = display;
 }
 
+/**
+ * Loads decks and renders the home view.
+ *
+ * @returns {void}
+ */
 function renderHomeView() {
   deckViewList.innerHTML = "";
   showView(homeSection, "block");
@@ -66,25 +167,48 @@ function renderHomeView() {
     });
 }
 
+/**
+ * Displays the not-found view.
+ *
+ * @returns {void}
+ */
 function renderNotFoundView() {
   showView(notFoundSection, "flex");
   page.classList.remove("page_no-mobile-bar");
 }
 
+/**
+ * Displays the new-deck form view.
+ *
+ * @returns {void}
+ */
 function renderNewDeckView() {
+  writePlaceholderJSON();
   showView(newDeckViewSection, "flex");
   page.classList.remove("page_no-mobile-bar");
 }
 
+/**
+ * Displays the about view.
+ *
+ * @returns {void}
+ */
 function renderAboutView() {
   showView(aboutSection, "flex");
   page.classList.remove("page_no-mobile-bar");
+  writePlaceholderJSON();
 }
 
 // Create two functions: createDeckEl(item) and renderDeckEl(item).
 // These functions do the same as the corresponding functions in our image gallery app:
 // createDeckEl() clones the template, customizes it (for now, just add the deck title), and returns it.
 // renderDeckEl() creates a deck element with createDeckEl() and prepends it to the deck list element.
+/**
+ * Creates a deck list card with delete and navigation behavior.
+ *
+ * @param {object} item - The deck data to render.
+ * @returns {HTMLElement} The populated deck card element.
+ */
 function createDeckEl(item) {
   const cloneEl = deckTemplateEL.content.querySelector(".card").cloneNode(true);
   const deckTitleEl = cloneEl.querySelector(".card__title");
@@ -118,11 +242,19 @@ function createDeckEl(item) {
   return cloneEl;
 }
 
+/**
+ * Creates a flashcard element with delete and flip behavior.
+ *
+ * @param {object} item - The card data to render.
+ * @param {string} deckColor - The parent deck color as a hexadecimal string.
+ * @returns {HTMLElement} The populated flashcard element.
+ */
 function createFlashcardEl(item, deckColor) {
   const cloneEl = flashcardTemplateEL.content
     .querySelector(".card")
     .cloneNode(true);
   const cardTitleEl = cloneEl.querySelector(".card__title");
+  const editBtn = cloneEl.querySelector(".card__btn_type_edit");
   const deleteBtn = cloneEl.querySelector(".card__btn_type_delete");
   const flipBtn = cloneEl.querySelector(".card__btn_type_flip");
   const cardRowEl = cloneEl.querySelector(".card__row");
@@ -131,7 +263,22 @@ function createFlashcardEl(item, deckColor) {
   cardTitleEl.textContent = item.question;
 
   deleteBtn.addEventListener("click", () => {
-    openModal(() => cloneEl.remove());
+    openModal(() => {
+      deleteCard(item._id)
+        .then(() => {
+          currentDeck.cards = currentDeck.cards.filter(
+            (card) => card._id !== item._id
+          );
+          cloneEl.remove();
+        })
+        .catch(() => {
+          showError("Error deleting flashcard");
+        });
+    });
+  });
+
+  editBtn.addEventListener("click", () => {
+    openFlashcardEditor(item, cloneEl);
   });
 
   flipBtn.addEventListener("click", () => {
@@ -148,6 +295,12 @@ function createFlashcardEl(item, deckColor) {
   return cloneEl;
 }
 
+/**
+ * Displays a selected deck and renders all of its cards.
+ *
+ * @param {object} deck - The deck to display.
+ * @returns {void}
+ */
 function renderDeckViewAgain(deck) {
   console.log("it made it..", deck)
   currentDeck = deck;
@@ -162,6 +315,11 @@ function renderDeckViewAgain(deck) {
   });
 }
 
+/**
+ * Routes the current URL hash to the corresponding application view.
+ *
+ * @returns {void}
+ */
 function router() {
   const hash = window.location.hash.slice(1) || "home";
 
@@ -208,6 +366,12 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 window.addEventListener("hashchange", router);
 
+/**
+ * Creates and prepends a deck card to the home view.
+ *
+ * @param {object} item - The deck data to render.
+ * @returns {void}
+ */
 function renderDeckEl(item) {
   const deckEl = createDeckEl(item);
   deckList.prepend(deckEl);

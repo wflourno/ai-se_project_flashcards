@@ -14,7 +14,6 @@
       href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Roboto+Serif:ital,opsz,wght@0,8..144,100..900;1,8..144,100..900&display=swap"
       rel="stylesheet"
     />
-    <script src="./assets/js/index.js" type="module"></script>
   </head>
   <body>
     <div class="page page_no-mobile-bar">
@@ -75,6 +74,11 @@
                     ></button>
                     <button
                       type="button"
+                      aria-label="Edit this flashcard"
+                      class="card__btn card__btn_type_edit"
+                    ></button>
+                    <button
+                      type="button"
                       aria-label="Delete this deck."
                       class="card__btn card__btn_type_delete"
                     ></button>
@@ -82,6 +86,35 @@
                 </li>
               </template>
             </ul>
+            <template id="new-flashcard-template">
+              <form class="new-flashcard">
+                <input
+                  class="new-flashcard__input new-flashcard__input_type_question"
+                  type="text"
+                  placeholder="Type the question or term"
+                />
+                <input
+                  class="new-flashcard__input new-flashcard__input_type_answer"
+                  type="text"
+                  placeholder="Type the answer"
+                  hidden
+                />
+                <div class="new-flashcard__buttons">
+                  <button
+                    type="button"
+                    aria-label="Flip to the answer"
+                    class="new-flashcard__flip-btn"
+                  ></button>
+                  <button
+                    type="submit"
+                    aria-label="Save flashcard"
+                    class="new-flashcard__submit-btn"
+                  >
+                    &#10003;
+                  </button>
+                </div>
+              </form>
+            </template>
             <button
               type="button"
               class="gallery__new-flashcard-btn gallery__new-flashcard-btn_location_deck-view"
@@ -189,6 +222,7 @@
                 name="json"
                 id="json"
                 class="new-deck-view__textarea-input"
+                placeholder=""
               ></textarea>
             </label>
             <button type="submit" class="new-deck-view__submit-btn" disabled>
@@ -203,10 +237,17 @@
         </section>
 
         <section id="about" class="about">
-          <pre class="about__pre"><code>// First line of code
- // Second line of code
- // Third line of code
-          </code><pre>
+          <h2>About the Flash Cards App</h2>
+          <p>In this Flash Cards App, you can create your decks of cards to memorize study materials and practice them.
+            It’s a student project for the TripleTen AI-Assisted Software Engineering course.
+            <br>
+            <br>
+            When creating a deck of cards, you have to paste/type JSON following this schema:
+          </p>
+          <pre class="about__pre">
+            <code>
+            </code>
+          <pre>
         </section>
       </main>
 
@@ -236,5 +277,8 @@
         <p class="footer__text">&copy; Wade Alexander Flournoy 2026</p>
       </footer>
     </div>
+
+    <script src="./assets/js/index.js" type="module"></script>
+
   </body>
 </html>

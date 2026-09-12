@@ -11,7 +11,14 @@ const errorModalMessage = errorModal.querySelector(".modal__error");
 const newDeckTextArea = document.querySelector(
   ".new-deck-view__textarea-input",
 );
+const codeEl = document.querySelector("code");
 
+/**
+ * Displays a modal element.
+ *
+ * @param {HTMLElement} modal - The modal to display.
+ * @returns {void}
+ */
 function openModal(modal) {
   modal.classList.add("modal_visible");
 }
@@ -21,9 +28,13 @@ modalCloseBtn.addEventListener("click", () => {
   errorModalMessage.classList.remove("modal__error");
 });
 
-//submit handler
-// -------------------------------------------
-newDeckForm.addEventListener("submit", function (e) {
+/**
+ * Validates and submits the new-deck form data.
+ *
+ * @param {SubmitEvent} e - The form submission event.
+ * @returns {boolean|void} False when color validation fails; otherwise void.
+ */
+function handleNewDeckSubmit(e) {
   e.preventDefault(); // stops the page from reloading
 
   const formData = new FormData(e.target);
@@ -66,7 +77,7 @@ newDeckForm.addEventListener("submit", function (e) {
         _id: newDeck._id,
         color: newDeck.color,
         name: newDeck.name,
-        cards: jsonData.cards
+        cards: jsonData.cards,
       });
       console.log(newDeck, "Response received");
 
@@ -74,7 +85,7 @@ newDeckForm.addEventListener("submit", function (e) {
       window.location.hash = "deck/" + newDeck._id;
     })
     .catch(showError);
-    console.log(showError);
+  console.log(showError);
 
   const colorValue = color;
   if (
@@ -89,20 +100,37 @@ newDeckForm.addEventListener("submit", function (e) {
   }
   console.log(true);
   return true;
-});
+}
 
+newDeckForm.addEventListener("submit", handleNewDeckSubmit);
+
+/**
+ * Enables the new-deck submit button.
+ *
+ * @returns {void}
+ */
 export function disableSubmitBtn() {
   submitBtn.disabled = false;
 }
 
+/**
+ * Displays an error message in the error modal.
+ *
+ * @param {string} message - The message to display.
+ * @returns {void}
+ */
 export function showError(message) {
   openModal(errorModal);
   errorModalMessage.textContent = message;
   errorModalMessage.classList.add("modal__error");
 }
 
-// Helper functions
-// -------------------------------------------
+/**
+ * Validates a deck name length and type.
+ *
+ * @param {*} name - The value to validate.
+ * @returns {string|null} The valid name, or null when invalid.
+ */
 function validateName(name) {
   if (typeof name != "string" || name.length < 2 || name.length > 80) {
     return null;
@@ -110,6 +138,12 @@ function validateName(name) {
   return name;
 }
 
+/**
+ * Parses JSON text without throwing on invalid input.
+ *
+ * @param {string} jsonString - The JSON text to parse.
+ * @returns {object|null} The parsed value, or null when parsing fails.
+ */
 function parseJSON(jsonString) {
   try {
     return JSON.parse(jsonString);
@@ -147,4 +181,20 @@ function normalizeColor(color) {
   const hex = color.startsWith("#") ? color.slice(1) : color;
   if (!HEX_DIGITS.test(hex)) return "#64d583";
   return "#" + hex.toLowerCase();
+}
+
+export function writePlaceholderJSON() {
+  const placeholderStr = `{
+  "name": "Deck Name",
+  "cards": [
+    {
+      "question": "Question 1",
+      "answer": "Answer 1"
+    },
+    ...
+  ]
+}`;
+  // Assign placeholderStr to the text area's placeholder attribute
+  newDeckTextArea.placeholder = placeholderStr;
+  codeEl.textContent = placeholderStr;
 }

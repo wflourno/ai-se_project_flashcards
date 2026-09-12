@@ -76,6 +76,12 @@
   background-image: url("../images/flip.svg");
 }
 
+.card__btn_type_edit {
+  width: 32px;
+  height: 32px;
+  background-image: url("../images/edit.svg");
+}
+
 .card_color_blue {
   background-color: #91a8f9;
 }

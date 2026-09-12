@@ -759,14 +759,14 @@ const decks = [
   },
 ];
 
-/**
- * Retrieves a deck object by its ID from the decks array.
- *
- * @param {string} deckId - The unique identifier of the deck to retrieve
- * @returns {object|undefined} The deck object if found, undefined otherwise
- */
-
 export let fetchedDecks = [];
+
+/**
+ * Retrieves a deck object by its ID from the fetched decks.
+ *
+ * @param {string} deckId - The unique identifier of the deck to retrieve.
+ * @returns {object|undefined} The deck object if found, otherwise undefined.
+ */
 function getDeckByID(deckId) {
   return fetchedDecks.find((deck) => deck._id === deckId);
 }
