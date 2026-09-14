@@ -58,7 +58,7 @@ function handleNewDeckSubmit(e) {
   }
 
   const color = normalizeColor(values.color);
-  const jsonDeckID = `${slugify(jsonData.name)}-${Date.now()}`;
+  const jsonDeckID = `${jsonData.name}-${Date.now()}`;
   const deck = {
     _id: jsonDeckID,
     color: color,
@@ -74,10 +74,8 @@ function handleNewDeckSubmit(e) {
     .then((newDeck) => {
       // Push the new deck onto the array
       fetchedDecks.push({
-        _id: newDeck._id,
-        color: newDeck.color,
-        name: newDeck.name,
-        cards: jsonData.cards,
+        ...newDeck,
+        cards: newDeck.cards.length > 0 ? newDeck.cards : jsonData.cards,
       });
       console.log(newDeck, "Response received");
 
@@ -150,22 +148,6 @@ function parseJSON(jsonString) {
   } catch (error) {
     return null;
   }
-}
-
-/**
- * Converts a string to a URL-safe slug: lowercase with any run of
- * non-alphanumeric characters replaced by a single hyphen, and no leading or
- * trailing hyphens.
- *
- * @param {string} str
- * @returns {string}
- */
-function slugify(str) {
-  return str
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
 }
 
 /**

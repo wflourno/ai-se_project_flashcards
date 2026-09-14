@@ -1,6 +1,10 @@
 import { getDeckByID, fetchedDecks, removeDeckByID } from "./decks.js";
 import { hexToString } from "./colors.js";
-import { disableSubmitBtn, showError, writePlaceholderJSON } from "./new-deck-view.js";
+import {
+  disableSubmitBtn,
+  showError,
+  writePlaceholderJSON,
+} from "./new-deck-view.js";
 import { renderCarouselView } from "./carousel.js";
 import { openModal } from "./modal.js";
 import {
@@ -46,20 +50,24 @@ newCardBtn.addEventListener("click", () => {
 });
 
 function openFlashcardEditor(cardData = null, cardElement = null) {
+  if (document.querySelector(".new-flashcard") && !cardElement) {
+    return null;
+  }
   const newFlashcardForm = newFlashcardTemplate.content
     .querySelector(".new-flashcard")
     .cloneNode(true);
   const questionInput = newFlashcardForm.querySelector(
-    ".new-flashcard__input_type_question"
+    ".new-flashcard__input_type_question",
   );
   const answerInput = newFlashcardForm.querySelector(
-    ".new-flashcard__input_type_answer"
+    ".new-flashcard__input_type_answer",
   );
   const flipBtn = newFlashcardForm.querySelector(".new-flashcard__flip-btn");
   const submitBtn = newFlashcardForm.querySelector(
-    ".new-flashcard__submit-btn"
+    ".new-flashcard__submit-btn",
   );
   let showingQuestion = true;
+  newFlashcardForm.style.backgroundColor = currentDeck.color;
 
   if (cardData) {
     questionInput.value = cardData.question;
@@ -94,11 +102,11 @@ function openFlashcardEditor(cardData = null, cardElement = null) {
       .then((card) => {
         if (cardData) {
           const cardIndex = currentDeck.cards.findIndex(
-            (currentCard) => currentCard._id === cardData._id
+            (currentCard) => currentCard._id === cardData._id,
           );
           currentDeck.cards[cardIndex] = card;
           newFlashcardForm.replaceWith(
-            createFlashcardEl(card, currentDeck.color)
+            createFlashcardEl(card, currentDeck.color),
           );
         } else {
           currentDeck.cards.push(card);
@@ -109,7 +117,7 @@ function openFlashcardEditor(cardData = null, cardElement = null) {
       .catch(() => {
         submitBtn.disabled = false;
         showError(
-          cardData ? "Error updating flashcard" : "Error creating flashcard"
+          cardData ? "Error updating flashcard" : "Error creating flashcard",
         );
       });
   });
@@ -155,16 +163,8 @@ function renderHomeView() {
   deckViewList.innerHTML = "";
   showView(homeSection, "block");
   page.classList.remove("page_no-mobile-bar");
-  getDecks()
-    .then((decks) => {
-      // Push the fetched decks onto the array
-      fetchedDecks.push(...decks);
-      decks.forEach(renderDeckEl);
-      console.log(decks, "Response received");
-    })
-    .catch(() => {
-      showError("Error fetching decks");
-    });
+  deckList.innerHTML = "";
+  fetchedDecks.forEach(renderDeckEl);
 }
 
 /**
@@ -267,7 +267,7 @@ function createFlashcardEl(item, deckColor) {
       deleteCard(item._id)
         .then(() => {
           currentDeck.cards = currentDeck.cards.filter(
-            (card) => card._id !== item._id
+            (card) => card._id !== item._id,
           );
           cloneEl.remove();
         })
@@ -302,7 +302,7 @@ function createFlashcardEl(item, deckColor) {
  * @returns {void}
  */
 function renderDeckViewAgain(deck) {
-  console.log("it made it..", deck)
+  console.log("it made it..", deck);
   currentDeck = deck;
   showView(deckViewSection, "block");
 
@@ -354,7 +354,6 @@ document.addEventListener("DOMContentLoaded", () => {
   getDecks()
     .then((decks) => {
       fetchedDecks.push(...decks);
-      decks.forEach(renderDeckEl);
       console.log("Response received");
     })
     .catch(() => {
